@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './style.css';
-import { AuthApiPost } from '../api/apiServices';
+import { SignUpApi } from '../api/apiServices';
 import { GoogleLogin } from '@react-oauth/google';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { AuthContext } from '../context/user';
+import Navbar from '../navbar/nav';
 const Signup = () => {
-    const { goggleLogin } = useContext(AuthContext)
+    const { setUserProfile } = useContext(AuthContext)
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
@@ -31,9 +32,10 @@ const Signup = () => {
         // You can add form validation here if needed
 
         try {
-            let response = await AuthApiPost("signup", formData)
-            // console.log(response,"sam");
+            let response = await SignUpApi("signup", formData)
+            
             if (response.status === 201) {
+                console.log(response,"in signup")
                 setFormData({
                     firstName: '',
                     lastName: '',
@@ -41,7 +43,11 @@ const Signup = () => {
                     password: '',
                     confirmPassword: '',
                 })
-
+                setUserProfile(response.data.message)
+                console.log(response.data.message,"signup response")
+                navigate('/login')
+            }else{
+                alert(response.data.data)
             }
         } catch (error) {
             console.error('Error during signup:', error);
@@ -57,7 +63,6 @@ const Signup = () => {
     })
 
     const MakeGoogleApi = async (res) => {
-        console.log(res);
         try {
             const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${res.access_token}`, {
                 headers: {
@@ -67,7 +72,7 @@ const Signup = () => {
             })
             // console.log(response)
             if (response.status === 200) {
-                goggleLogin(response.data)
+                setUserProfile(response.data)
                 navigate('/task')
                 // console.log(response.data);
             }
@@ -79,56 +84,59 @@ const Signup = () => {
     }
 
     return (
-        <div className="signup-container">
-            <h2>Signup</h2>
-            <form className="signup-form" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                />
-                <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-                <input
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
-                />
-                <button type="submit" className="signup-button">Signup</button>
-            </form>
-            <div className="signup-footer">
-                <p>Already have an account? <Link to="/login">Login</Link></p>
-                <button onClick={() => googleAuth()} className="google-login-button">Login with Google</button>
+        <>
+            <Navbar />
+            <div className="signup-container">
+                <h2>Signup</h2>
+                <form className="signup-form" onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="firstName"
+                        placeholder="First Name"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="lastName"
+                        placeholder="Last Name"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required
+                    />
+                    <button type="submit" className="signup-button">Signup</button>
+                </form>
+                <div className="signup-footer">
+                    <p>Already have an account? <Link to="/login">Login</Link></p>
+                    <button onClick={() => googleAuth()} className="google-login-button">Login with Google</button>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

@@ -1,26 +1,23 @@
 import axios from "axios"
-// const baseUrl = 'http://localhost:3000'//
-const baseUrl = 'https://vooshserver-xwjd.onrender.com'
+const baseUrl = 'http://localhost:3000'//
+// server hosted on Render https://render.com/
+// const baseUrl = 'https://vooshserver-xwjd.onrender.com'
 
-export const AuthApiPost = async (params, data) => {
+export const SignUpApi = async (params, data) => {
     try {
-        console.log(`${baseUrl}/${params}`, "samm");
         const res = await axios.post(`${baseUrl}/${params}`, data, {
             headers: {
                 'Content-Type': 'application/json',
             }
         })
-        // console.log("in api ", res);
+
         return res
     } catch (error) {
-        // console.log("in api ", error.response.data);
-
-        return error.response.data
+        return error.response
     }
 
 }
-export const AuthApiGet = async (data) => {
-    console.log("in api ");
+export const LoginApi = async (data) => {
     try {
         const res = await axios.post(`${baseUrl}/login`, data, {
             headers: {
@@ -29,15 +26,12 @@ export const AuthApiGet = async (data) => {
         })
         return res
     } catch (error) {
-        // console.log("in api ", error.response.data);
-
-        return error.response.data
+        return error.response
     }
 
 }
 
 export const GetTaskApi = async (data) => {
-    console.log("in api ");
     try {
         const res = await axios.get(`${baseUrl}/getTask`, data, {
             headers: {
@@ -53,9 +47,10 @@ export const GetTaskApi = async (data) => {
 
 }
 
-export const DeleteTask = async (id) => {
+export const DeleteTaskApi = async (id) => {
     let data = id
     try {
+        console.log(`${baseUrl}/deleteTask/${data}`)
         const res = await axios.delete(`${baseUrl}/deleteTask/${data}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -63,8 +58,38 @@ export const DeleteTask = async (id) => {
         })
         return res
     } catch (error) {
-        // console.log("in api ", error.response.data);
+        return error.response.data
+    }
 
+}
+
+export const EditTaskApi = async (value) => {
+    const _id = value._id
+    const reqBody = { taskName: value.taskName, description: value.description }
+    try {
+        const res = await axios.put(`${baseUrl}/updateTask/${_id}`, reqBody, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        return res
+    } catch (error) {
+        return error.response.data
+    }
+
+}
+
+
+export const CreatTaskApi = async (value) => {
+
+    try {
+        const res = await axios.post(`${baseUrl}/createTask/`, value, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        return res
+    } catch (error) {
         return error.response.data
     }
 

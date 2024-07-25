@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
-    const goggleLogin = (data) => {
+    const setUserProfile = (data) => {
         setUser(data)
     }
     const goggleLogout = (callback) => {
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         // callback()
     }
     return (
-        <AuthContext.Provider value={{ user, goggleLogin, goggleLogout }}>
+        <AuthContext.Provider value={{ user, setUserProfile, goggleLogout }}>
             {children}
         </AuthContext.Provider>
     );

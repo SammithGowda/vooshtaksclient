@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // import loginApi from './api/apiLogin';
 import './style.css';
-import { AuthApiGet } from '../api/apiServices';
+import { LoginApi } from '../api/apiServices';
 import Navbar from '../navbar/nav';
-
+import { AuthContext } from '../context/user';
 const Login = () => {
+    const { setUserProfile } = useContext(AuthContext)
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -21,19 +22,15 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // You can add form validation here if needed
-
-        // console.log('Login successful:', formData);
         try {
 
-            const response = await AuthApiGet(formData);
-            console.log('Login successful:', response);
+            const response = await LoginApi(formData);
             if (response.status === 201) {
-                //next page
+                setUserProfile(response.data.message)
                 naviagte('/task')
+            } else {
+                alert(response.data.data)
             }
-            // Handle successful login, e.g., redirect to home page
         } catch (error) {
             console.error('Error during login:', error);
             // Handle errors, e.g., show an error message
@@ -42,7 +39,7 @@ const Login = () => {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
             <div className="login-container">
                 <h2>Login</h2>
                 <form className="login-form" onSubmit={handleSubmit}>

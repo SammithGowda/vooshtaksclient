@@ -173,4 +173,89 @@
   margin-top: 20px;
 }
 
+/* sakjdh */
+
+/* task.css */
+
+.task-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  outline: none;
+}
+
+.task-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.task-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-modal-content label {
+  font-weight: bold;
+}
+
+.task-modal-content input,
+.task-modal-content textarea {
+  width:70%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.task-modal-content textarea {
+  height: 100px;
+  resize: none;
+}
+
+.task-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.save-btn, .cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #0056b3;
+}
+
+.cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+
   

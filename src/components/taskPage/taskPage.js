@@ -1,18 +1,19 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../navbar/nav';
 import './task.css'; // Import the CSS file
-import { DeleteTask, GetTaskApi } from '../api/apiServices';
+import { DeleteTaskApi, EditTaskApi, GetTaskApi, CreatTaskApi } from '../api/apiServices';
 import Modal from 'react-modal';
-import { AuthContext } from '../context/user';
+import EditTask from './editTaks';
+import AddTask from './addTask';
 
 const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user } = useContext(AuthContext)
+  const [openEditModal, setOpenEditModla] = useState(false);
+  const [openViewModal, setOpenViewModla] = useState(false);
+  const [openAddTaskModal, setOpenAddTaskModla] = useState(false);
 
   useEffect(() => {
-    console.log(user, "guser")
     fetchTasks();
   }, []);
 
@@ -24,25 +25,65 @@ const TaskPage = () => {
 
   const deleteTask = async (data) => {
     let { _id } = data
-    const res = await DeleteTask(_id)
+    const res = await DeleteTaskApi(_id)
     if (res.status === 200) {
       fetchTasks();
     }
   }
-  const openModal = (task) => {
-    setSelectedTask(task);
-    setIsModalOpen(true);
+
+  const editTask = async (value) => {
+    if (!value) {
+      setOpenEditModla(false)
+      return
+    }
+    const res = await EditTaskApi(value)
+    if (res.status === 200) {
+      fetchTasks()
+    }
+    setOpenEditModla(false)
+  }
+
+  const createNewTask = async (value) => {
+    if (!value) {
+      setOpenAddTaskModla(false)
+      return
+    }
+    if (value.description.length === 0 || value.description.taskName) {
+      alert("Value can't be empty")
+      return
+    }
+    const response = await CreatTaskApi(value)
+    if (response.status === 201) {
+      fetchTasks();
+      setOpenAddTaskModla(false)
+    } else {
+      alert("some thing went worng")
+    }
+    // console.log(value)
+  }
+
+
+  const openModal = (task, value) => {
+    if (value === "edit") {
+      setOpenEditModla(true)
+      setSelectedTask(task)
+    } else {
+      setSelectedTask(task);
+      setOpenViewModla(true);
+
+    }
   };
   const closeModal = () => {
     setSelectedTask(null);
-    setIsModalOpen(false);
+    setOpenViewModla(false);
   };
+
   return (
     <div className="task-page">
       <Navbar />
       <div className="task-container">
         <div className="task-header">
-          <button className="add-task-btn">Add Task</button>
+          <button onClick={() => setOpenAddTaskModla(true)} className="add-task-btn">Add Task</button>
           <div className="search-sort">
             <input type="text" placeholder="Search..." className="search-input" />
             <select className="sort-select">
@@ -59,8 +100,8 @@ const TaskPage = () => {
               <p>Created at: {new Date(task.createdAt).toLocaleString()}</p>
               <div className="task-actions">
                 <button onClick={() => deleteTask(task)} className="delete-btn">Delete</button>
-                <button className="edit-btn">Edit</button>
-                <button onClick={() => openModal(task)} className="view-details-btn">View Details</button>
+                <button onClick={() => openModal(task, "edit")} className="edit-btn">Edit</button>
+                <button onClick={() => openModal(task, "info")} className="view-details-btn">View Details</button>
               </div>
             </div>
           ))}
@@ -68,11 +109,12 @@ const TaskPage = () => {
       </div>
       {selectedTask && (
         <Modal
-          isOpen={isModalOpen}
+          isOpen={openViewModal}
           onRequestClose={closeModal}
           contentLabel="Task Details"
           className="task-modal"
           overlayClassName="task-modal-overlay"
+          ariaHideApp={false}
         >
           <h2>Task Details</h2>
           <h3>Title: {selectedTask.taskName}</h3>
@@ -81,6 +123,21 @@ const TaskPage = () => {
           <button className="close-modal-btn" onClick={closeModal}>Close</button>
         </Modal>
       )}
+
+      {openEditModal && (
+        <EditTask
+          value={selectedTask}
+          open={openEditModal}
+          closeModal={editTask}
+        />
+      )}
+      {
+        openAddTaskModal && (
+          <AddTask
+            open={openAddTaskModal}
+            addTask={createNewTask} />
+        )
+      }
     </div>
   );
 };
