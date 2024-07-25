@@ -1,5 +1,6 @@
 import axios from "axios"
 // const baseUrl = 'http://localhost:3000'//
+
 // server hosted on Render https://render.com/
 const baseUrl = 'https://vooshserver-xwjd.onrender.com'
 
@@ -40,7 +41,6 @@ export const GetTaskApi = async (data) => {
         })
         return res
     } catch (error) {
-        // console.log("in api ", error.response.data);
 
         return error.response.data
     }

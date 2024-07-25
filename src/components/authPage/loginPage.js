@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import loginApi from './api/apiLogin';
 import './style.css';
 import { LoginApi } from '../api/apiServices';
 import Navbar from '../navbar/nav';
@@ -33,7 +32,6 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Error during login:', error);
-            // Handle errors, e.g., show an error message
         }
     };
 

@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
         if (user) {
             setUser(null)
         }
-        // callback()
     }
     return (
         <AuthContext.Provider value={{ user, setUserProfile, goggleLogout }}>

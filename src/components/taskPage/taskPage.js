@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../navbar/nav';
-import './task.css'; // Import the CSS file
+import './task.css'; 
 import { DeleteTaskApi, EditTaskApi, GetTaskApi, CreatTaskApi } from '../api/apiServices';
 import Modal from 'react-modal';
 import EditTask from './editTaks';
@@ -59,7 +59,6 @@ const TaskPage = () => {
     } else {
       alert("some thing went worng")
     }
-    // console.log(value)
   }
 
 

@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './style.css';
 import { SignUpApi } from '../api/apiServices';
-import { GoogleLogin } from '@react-oauth/google';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { AuthContext } from '../context/user';
@@ -29,7 +28,7 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // You can add form validation here if needed
+        
 
         try {
             let response = await SignUpApi("signup", formData)
@@ -44,7 +43,6 @@ const Signup = () => {
                     confirmPassword: '',
                 })
                 setUserProfile(response.data.message)
-                console.log(response.data.message,"signup response")
                 navigate('/login')
             }else{
                 alert(response.data.data)
@@ -70,15 +68,12 @@ const Signup = () => {
                     Accept: 'application/json'
                 }
             })
-            // console.log(response)
             if (response.status === 200) {
                 setUserProfile(response.data)
                 navigate('/task')
-                // console.log(response.data);
             }
         } catch (error) {
-
-            console.log(`Error while make G-auth api ${error}`)
+            console.log(`Error while trying G-auth api ${error}`)
         }
 
     }

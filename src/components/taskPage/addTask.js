@@ -10,7 +10,6 @@ const AddTask = ({ open, addTask }) => {
         <>
             <Modal
                 isOpen={open}
-                // onRequestClose={onRequestClose}
                 contentLabel="Edit Task"
                 ariaHideApp={false}
                 className="task-modal"
