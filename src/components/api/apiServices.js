@@ -1,7 +1,7 @@
 import axios from "axios"
-const baseUrl = 'http://localhost:3000'//
+// const baseUrl = 'http://localhost:3000'//
 // server hosted on Render https://render.com/
-// const baseUrl = 'https://vooshserver-xwjd.onrender.com'
+const baseUrl = 'https://vooshserver-xwjd.onrender.com'
 
 export const SignUpApi = async (params, data) => {
     try {
